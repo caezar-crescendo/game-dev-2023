@@ -1,0 +1,51 @@
+.app {
+  text-align: center;
+  width: 900px;
+  margin: auto;
+
+  > div.body {
+    width: 92%;
+    margin: auto;
+  }
+
+  .header-nav {
+    width: 100%;
+
+    div {
+      display: inline-block;
+      height: 40px;
+      width: 44%;
+      border: 1px solid #413f46;
+      margin: 50px 20px;
+    }
+  }
+
+  .input-panel {
+    margin-bottom: 30px;
+    width: 100%;
+
+    > div {
+      display: inline-block;
+      width: 50%;
+      text-align: left;
+    }
+  }
+
+  .list-panel > div {
+    border: 1px solid #aaa;
+    margin-bottom: 8px;
+    text-align: left;
+    padding: 5px;
+  }
+
+  button {
+    height: 36px;
+    margin-left: 20px;
+    width: 100px;
+  }
+
+  input {
+    height: 20px;
+    padding: 6px;
+  }
+}
