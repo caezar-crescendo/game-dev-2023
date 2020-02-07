@@ -1,6 +1,8 @@
 ### Developer's note
 * node version used v10.13.0
+
 1. npm install
+
 2. npm run start
 
 author: Caezar Ian Olivares
