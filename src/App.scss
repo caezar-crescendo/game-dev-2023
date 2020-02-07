@@ -1,6 +1,6 @@
 .app {
   text-align: center;
-  width: 900px;
+  max-width: 900px;
   margin: auto;
 
   > div.body {
@@ -14,9 +14,9 @@
     div {
       display: inline-block;
       height: 40px;
-      width: 44%;
-      border: 1px solid #413f46;
-      margin: 50px 20px;
+      width: 46%;
+      outline: solid 1px #aaa;
+      margin: 50px 2%;
     }
   }
 

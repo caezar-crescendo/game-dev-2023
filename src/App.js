@@ -8,14 +8,15 @@ function App() {
       super(props);
       this.state = {
         items: props.items,
-        filtered: props.filtered,
+        filtered: null,
       };
     }
 
     render() {
-      console.log('ItemList: ', this.state.items);
+      console.log('ItemList filtered: ', this.props.filtered);
       let rows = [];
-      let data = this.state.items.length ? this.state.items : this.state.filtered;
+      // let data = this.state.items.length ? this.state.items : this.props.filtered;
+      let data = this.props.filtered.length ? this.props.filtered : this.state.items;
       for (let i = 0; i < data.length; i++) {
         rows.push(
           <div key={i}>{data[i]}</div>
@@ -42,10 +43,12 @@ function App() {
       if (searchTextEl && searchTextEl.value) {
         filteredList = this.state.tabOneItems.filter((e) => e.includes(searchTextEl.value));
         console.log('onSearchSubmit: ', filteredList);
+        this.state.filteredList = filteredList;
         this.setState({filteredList: filteredList});
+        return false;
       }
+      this.state.filteredList = this.state.tabOneItems;
       this.setState({filteredList: this.state.tabOneItems});
-      this.renderItems();
       return false;
     }
 
@@ -62,6 +65,7 @@ function App() {
     }
 
     renderItems() {
+      console.log('renderItems this.state.filteredList: ', this.state.filteredList);
       return (
         <ItemList filtered={this.state.filteredList} items={this.state.tabOneItems}/>
       )
@@ -93,7 +97,6 @@ function App() {
       )
     }
   }
-
 
   return (
     <div className="app">
