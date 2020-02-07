@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import './App.scss';
 
 function App() {
@@ -15,7 +21,6 @@ function App() {
     render() {
       console.log('ItemList filtered: ', this.props.filtered);
       let rows = [];
-      // let data = this.state.items.length ? this.state.items : this.props.filtered;
       let data = this.props.filtered.length ? this.props.filtered : this.state.items;
       for (let i = 0; i < data.length; i++) {
         rows.push(
@@ -30,15 +35,13 @@ function App() {
     constructor(props) {
       super(props);
       this.state = {
-        tabOneItems: ['one', 'two', 'two'],
+        tabOneItems: [],
         filteredList: [],
       };
     }
 
-    onSearchSubmit(event) {
-      event.preventDefault();
-      // list.filter((e) => e.includes('three'));
-      let searchTextEl = document.querySelector('.form-search').searchString;
+    onSearchSubmit() {
+      let searchTextEl = document.querySelector('.input-search');
       let filteredList;
       if (searchTextEl && searchTextEl.value) {
         filteredList = this.state.tabOneItems.filter((e) => e.includes(searchTextEl.value));
@@ -85,9 +88,7 @@ function App() {
               </div>
             </div>
             <div>
-              <form className="form-search" onSubmit={(e) => this.onSearchSubmit(e)}>
-                <input type="text" defaultValue="two" className="input-search" name="searchString"/>
-              </form>
+              <input type="text" onChange={() => this.onSearchSubmit()} className="input-search" name="searchString"/>
             </div>
           </div>
           <div className="list-panel">
@@ -100,16 +101,24 @@ function App() {
 
   return (
     <div className="app">
-      <div className="header-nav">
-        <div>tab 1</div>
-        <div>tab 2</div>
-      </div>
-      <div className="body">
-        <TabOne/>
-        {/*<div className="tab-two">*/}
-        {/*This is tab 2 view*/}
-        {/*</div>*/}
-      </div>
+      <Router>
+        <div className="header-nav">
+          <Link to="/tab-one"><div>tab 1</div></Link>
+          <Link to="/tab-two"><div>tab 2</div></Link>
+        </div>
+        <div className="body">
+          <Switch>
+            <Route path="/tab-one">
+              <TabOne/>
+            </Route>
+            <Route path="/tab-two">
+              <div className="tab-two">
+                This is tab 2 view
+              </div>
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }
