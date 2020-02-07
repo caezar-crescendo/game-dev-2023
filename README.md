@@ -1,3 +1,11 @@
+### Developer's note
+* node version used v10.13.0
+1. npm install
+2. npm run start
+
+author: Caezar Ian Olivares
+date created: February 7, 2020
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
