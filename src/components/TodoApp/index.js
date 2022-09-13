@@ -4,7 +4,11 @@ import TodoItem from '../TodoItem';
 import { TodoContext } from '../../Context/Todo';
 
 function TodoApp() {
-  const [todoItems, setTodoItems] = useState([]);
+  const [todoItems, setTodoItems] = useState([
+    'Todo List Item #1',
+    'Todo List Item #2',
+    'Todo List Item #3',
+  ]);
 
   return (
     <TodoContext.Provider value={{ todoItems, setTodoItems }}>
