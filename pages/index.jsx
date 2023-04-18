@@ -2,7 +2,7 @@
 // import Image from "next/image";
 import _ from "lodash";
 import ProductSection from "../components/ProductSection";
-import { getEntriesByContentType } from "../lib/helpers";
+import { getEntriesByContentType, getEntryByContentType } from '../lib/helpers';
 
 // styles
 
@@ -11,6 +11,8 @@ export default function Home(props) {
   const sections = _.get(page, "fields.sections");
   const headline = _.get(page, "fields.headline");
 
+  const entryTest = _.get(props, "entryTest");
+  console.log('entryTest', entryTest);
   console.log(page);
   return (
     <>
@@ -46,11 +48,13 @@ export default function Home(props) {
 
 export async function getStaticProps() {
   const pageEntries = await getEntriesByContentType("landingPage", "home-page");
+  const entryTest = await getEntryByContentType();
   let homepageEntry = _.get(pageEntries, "items[0]");
 
   return {
     props: {
       page: homepageEntry ? homepageEntry : {},
+      entryTest: entryTest,
     },
   };
 }

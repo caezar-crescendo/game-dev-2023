@@ -2,7 +2,7 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import _ from "lodash";
 import Head from "next/head";
 import ImageComponent from "../../components/ImageComponent";
-import { getEntriesByContentType } from "../../lib/helpers";
+import { getEntriesByContentType, getEntryByContentType } from '../../lib/helpers';
 import richtextRenderOptions from "../../lib/richtextRenderOptions";
 
 const ProductPage = (props) => {
