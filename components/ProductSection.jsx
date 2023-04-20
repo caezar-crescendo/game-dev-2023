@@ -1,4 +1,3 @@
-import _ from "lodash";
 import ProductCardComponent from "./ProductCardComponent";
 const ProductSection = (props) => {
   const id = _.get(props, "id");

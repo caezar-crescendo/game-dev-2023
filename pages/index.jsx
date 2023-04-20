@@ -1,60 +1,52 @@
-// import Head from "next/head";
-// import Image from "next/image";
-import _ from "lodash";
-import ProductSection from "../components/ProductSection";
-import { getEntriesByContentType, getEntryByContentType } from '../lib/helpers';
-
-// styles
+import { useEffect, useState } from 'react';
+import { getEntriesByContentType } from '../lib/helpers';
+import AddUser from '../components/AddUser';
+import { Container } from '@mui/material';
+import Board from '../components/Board';
 
 export default function Home(props) {
-  const page = _.get(props, "page");
-  const sections = _.get(page, "fields.sections");
-  const headline = _.get(page, "fields.headline");
+  console.log('props', props);
+  const [user, setUser] = useState(null);
 
-  const entryTest = _.get(props, "entryTest");
-  console.log('entryTest', entryTest);
-  console.log(page);
+  useEffect(() => {
+    // createEntry({
+    //   name: {
+    //     "en-US": "John Doe tEst",
+    //   },
+    //   points: {
+    //     "en-US": 10,
+    //   }
+    // }, 'user').then((response) => {
+    //   console.log('response', response);
+    // });
+  }, []);
+
   return (
     <>
-      {/* {JSON.stringify(page)} */}
-      <h1 className="font-bold text-2xl mb-4 text-center">{headline}</h1>
-      <div className="flex flex-col space-y-4">
-        {Array.isArray(sections)
-          ? sections.map((section, sectionIndex) => {
-              const contentType = _.get(section, "sys.contentType.sys.id");
-              const sectionId = _.get(section, "sys.id");
-              const fields = _.get(section, "fields");
-              if (contentType === "productSection") {
-                return (
-                  <ProductSection
-                    key={sectionId}
-                    id={sectionId}
-                    fields={fields}
-                  />
-                );
-              }
-
-              if (contentType === "product") {
-                return <>{contentType}</>;
-              }
-
-              return "";
-            })
-          : ""}
-      </div>
+      <Container maxWidth="lg">
+        {!user ? (
+          <AddUser callback={(entry) => {
+            setUser(entry);
+          }}/>
+        ) : (
+          <Board />
+        )}
+      </Container>
+      {/*<pre>*/}
+      {/*   {JSON.stringify(props, undefined, 2)}*/}
+      {/*</pre>*/}
     </>
   );
 }
 
 export async function getStaticProps() {
-  const pageEntries = await getEntriesByContentType("landingPage", "home-page");
-  const entryTest = await getEntryByContentType();
-  let homepageEntry = _.get(pageEntries, "items[0]");
+  const user = await getEntriesByContentType("user", true);
+  const question = await getEntriesByContentType("question");
 
   return {
     props: {
-      page: homepageEntry ? homepageEntry : {},
-      entryTest: entryTest,
+      user,
+      question,
     },
   };
 }
