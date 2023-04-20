@@ -7,7 +7,7 @@ const MainLayout = (props) => {
       <Head>
         <title>Jumpstart Shop</title>
       </Head>
-      <main>
+      <main className="bg-gray-300 min-h-[100vh]">
         <div>
           {props.children}
         </div>

@@ -22,31 +22,36 @@ export default function Home(props) {
   }, []);
 
   return (
-    <>
-      <Container maxWidth="lg">
+    <div className="pt-5">
+      <Container maxWidth="xl">
         {!user ? (
+        // {!!user ? (
           <AddUser callback={(entry) => {
             setUser(entry);
           }}/>
         ) : (
-          <Board />
+          <Board
+            user={user}
+            // users={props.users?.items || []}
+            questions={props.questions?.items || []}
+          />
         )}
       </Container>
       {/*<pre>*/}
       {/*   {JSON.stringify(props, undefined, 2)}*/}
       {/*</pre>*/}
-    </>
+    </div>
   );
 }
 
 export async function getStaticProps() {
-  const user = await getEntriesByContentType("user", true);
-  const question = await getEntriesByContentType("question");
+  const users = await getEntriesByContentType("user", true);
+  const questions = await getEntriesByContentType("question");
 
   return {
     props: {
-      user,
-      question,
+      users,
+      questions,
     },
   };
 }

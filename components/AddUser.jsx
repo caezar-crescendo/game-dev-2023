@@ -6,18 +6,6 @@ const AddUser = ({callback = () => {}}) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // const createUser = async (name) => {
-  //   if (!name) return;
-  //
-  //   const entry = await createEntry({
-  //     name: {
-  //       "en-US": name,
-  //     },
-  //   }, 'user');
-  //
-  //   console.log('entry response', entry);
-  // };
-
   return (
     <div className="AddUser min-h-[500px] flex items-center justify-center">
       <Box
@@ -41,10 +29,11 @@ const AddUser = ({callback = () => {}}) => {
           callback(entry);
         }}
       >
-        <div className="flex items-center justify-center gap-5">
+        <div className="bg-white p-5 flex items-center justify-center gap-5">
           <TextField
             required
             label="Enter Name"
+            className="min-w-[400px]"
             value={name}
             onChange={(event ) => {
               setName(event.target.value);
