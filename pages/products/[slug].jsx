@@ -1,7 +1,6 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import _ from "lodash";
 import Head from "next/head";
-import ImageComponent from "../../components/ImageComponent";
 import { getEntriesByContentType, getEntryByContentType } from '../../lib/helpers';
 import richtextRenderOptions from "../../lib/richtextRenderOptions";
 
@@ -18,9 +17,6 @@ const ProductPage = (props) => {
         <title>{title}</title>
       </Head>
       <div className="p-20 flex flex-col space-y-4 h-screen items-center">
-        <div className="w-full rounded shadow-xl">
-          <ImageComponent image={fields.image} />
-        </div>
         <h1 className="text-3xl mb-4 font-bold">{title}</h1>
         <p className=" text-xl text-blau">${fields.price}</p>
         <div className="">

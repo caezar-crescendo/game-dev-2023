@@ -25,21 +25,16 @@ export default function Home(props) {
     <div className="pt-5">
       <Container maxWidth="xl">
         {!user ? (
-        // {!!user ? (
           <AddUser callback={(entry) => {
             setUser(entry);
           }}/>
         ) : (
           <Board
             user={user}
-            // users={props.users?.items || []}
             questions={props.questions?.items || []}
           />
         )}
       </Container>
-      {/*<pre>*/}
-      {/*   {JSON.stringify(props, undefined, 2)}*/}
-      {/*</pre>*/}
     </div>
   );
 }
