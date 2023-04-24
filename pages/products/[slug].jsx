@@ -1,27 +1,85 @@
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import _ from "lodash";
 import Head from "next/head";
-import { getEntriesByContentType, getEntryByContentType } from '../../lib/helpers';
-import richtextRenderOptions from "../../lib/richtextRenderOptions";
+import { getEntriesByContentType } from '../../lib/helpers';
+import { Container } from '@mui/material';
+import CategoryQuestionContainer from '../../components/CategoryQuestionContainer';
 
 const ProductPage = (props) => {
-  console.log("static props", props);
-  const product = _.get(props, "product.items[0]");
-  const contentType = _.get(product, "sys.contentType.sys.id");
-  const productId = _.get(product, "sys.id");
-  const fields = _.get(product, "fields");
-  const title = _.get(product, "fields.title");
+  const q = props.questions;
+  const u = {
+    "metadata": {
+      "tags": []
+    },
+    "sys": {
+      "space": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Space",
+          "id": "8rty9lj73ta8"
+        }
+      },
+      "id": "4GJgwFttV7hVVMQhFmhjjV",
+      "type": "Entry",
+      "createdAt": "2023-04-24T12:10:56.724Z",
+      "updatedAt": "2023-04-24T12:10:56.724Z",
+      "environment": {
+        "sys": {
+          "id": "master",
+          "type": "Link",
+          "linkType": "Environment"
+        }
+      },
+      "createdBy": {
+        "sys": {
+          "type": "Link",
+          "linkType": "User",
+          "id": "4IrYxPIKZx5N4ei2LRqUWB"
+        }
+      },
+      "updatedBy": {
+        "sys": {
+          "type": "Link",
+          "linkType": "User",
+          "id": "4IrYxPIKZx5N4ei2LRqUWB"
+        }
+      },
+      "publishedCounter": 0,
+      "version": 1,
+      "automationTags": [],
+      "contentType": {
+        "sys": {
+          "type": "Link",
+          "linkType": "ContentType",
+          "id": "user"
+        }
+      }
+    },
+    "fields": {
+      "name": {
+        "en-US": "MZa"
+      },
+      "points": {
+        "en-US": 0
+      },
+      "active": {
+        "en-US": true
+      }
+    }
+  };
+
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>Test</title>
       </Head>
-      <div className="p-20 flex flex-col space-y-4 h-screen items-center">
-        <h1 className="text-3xl mb-4 font-bold">{title}</h1>
-        <p className=" text-xl text-blau">${fields.price}</p>
-        <div className="">
-          {documentToReactComponents(fields.description, richtextRenderOptions)}
-        </div>
+
+      <div className="pt-5">
+        <Container maxWidth="xl">
+          <CategoryQuestionContainer
+            user={u}
+            questions={q.items || []}
+          />
+        </Container>
       </div>
     </>
   );
@@ -47,11 +105,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const slug = _.get(context, "params.slug");
-  const product = await getEntriesByContentType("product", slug);
+  const users = await getEntriesByContentType("user", true);
+  const questions = await getEntriesByContentType("question");
 
   return {
-    props: { product },
+    props: {
+      users,
+      questions,
+    },
   };
 }
 

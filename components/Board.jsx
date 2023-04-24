@@ -6,11 +6,24 @@ import ScoreBoardContainer from './ScoreBoardContainer';
 
 const Board = ({user, questions}) => {
   const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
 
+  console.log('users', users);
+
+  const renderPlayerInfo = () => {
+    const activeUser = users.find(item => item.sys.id === user.sys.id);
+
+    return (
+      <div className="grid grid-cols-2">
+        <div>{activeUser.fields.name}</div>
+        <div>Score: {activeUser.fields.points}</div>
+      </div>
+    );
+  }
   useEffect(() => {
     setInterval(async  () => {
-      const usersEntries = await getEntriesByContentType("user");
+      const usersEntries = await getEntriesByContentType("user", !loading);
 
       if (typeof usersEntries === 'object' && usersEntries?.items.length) {
         setUsers(usersEntries.items);
@@ -34,10 +47,7 @@ const Board = ({user, questions}) => {
         <Grid container spacing={2}>
           <Grid item xs={8}>
             <Paper className="p-5 min-h-[90vh]">
-              <div className="grid grid-cols-2">
-                <div>{user.fields.name['en-US']}</div>
-                <div>Score: {user.fields.points['en-US']}</div>
-              </div>
+              {renderPlayerInfo()}
               <CategoryQuestionContainer
                 user={user}
                 questions={questions}
