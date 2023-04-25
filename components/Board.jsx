@@ -1,15 +1,12 @@
-import { Box, CircularProgress, Container, Grid, Paper, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { createEntry, getEntriesByContentType, publishEntry, updatePoints } from '../lib/helpers';
+import { CircularProgress, Grid, Paper } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { getEntriesByContentType } from '../lib/helpers';
 import CategoryQuestionContainer from './CategoryQuestionContainer';
 import ScoreBoardContainer from './ScoreBoardContainer';
 
 const Board = ({user, questions}) => {
-  const [loading, setLoading] = useState(true);
-  // const [loading, setLoading] = useState(false);
+  const loading = useRef(true);
   const [users, setUsers] = useState([]);
-
-  console.log('users', users);
 
   const renderPlayerInfo = () => {
     const activeUser = users.find(item => item.sys.id === user.sys.id);
@@ -21,16 +18,17 @@ const Board = ({user, questions}) => {
       </div>
     );
   }
+
   useEffect(() => {
     setInterval(async  () => {
-      const usersEntries = await getEntriesByContentType("user", !loading);
+      const usersEntries = await getEntriesByContentType("user", !loading.current);
 
       if (typeof usersEntries === 'object' && usersEntries?.items.length) {
         setUsers(usersEntries.items);
         const isActive = usersEntries.items.find(item => item.sys.id === user.sys.id)
 
-        if (isActive && loading) {
-          setLoading(false);
+        if (isActive && loading.current) {
+          loading.current = false;
         }
       }
     }, 1000);
@@ -38,7 +36,7 @@ const Board = ({user, questions}) => {
 
   return (
     <div className="Board min-h-[90vh] flex items-center justify-center">
-      {loading ? (
+      {loading.current ? (
         <div className="flex items-center justify-center gap-5">
           <h1>Please wait...</h1>
           <CircularProgress />

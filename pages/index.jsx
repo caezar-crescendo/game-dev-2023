@@ -5,7 +5,7 @@ import { Container } from '@mui/material';
 import Board from '../components/Board';
 
 export default function Home(props) {
-  console.log('props', props);
+  // console.log('props', props);
   const [user, setUser] = useState(null);
 
   return (
