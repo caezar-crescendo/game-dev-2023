@@ -5,7 +5,7 @@ const MainLayout = (props) => {
   return (
     <>
       <Head>
-        <title>Jumpstart Shop</title>
+        <title>The Category Game</title>
       </Head>
       <main className="bg-gray-300 min-h-[100vh]">
         <div>

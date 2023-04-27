@@ -21,6 +21,10 @@ a {
     min-width: 500px;
 }
 
+.game-icon {
+    @apply text-9xl ml-4;
+}
+
 .TextField-player-name .MuiInputBase-input {
     @apply text-5xl font-bold;
 }

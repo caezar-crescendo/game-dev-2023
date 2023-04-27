@@ -1,5 +1,5 @@
 {
-    "name": "jumpstart-shop-nextjs",
+    "name": "the-category-game-next-js",
     "private": true,
     "scripts": {
         "setup": "node setup.mjs",

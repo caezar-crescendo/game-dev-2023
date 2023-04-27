@@ -8,7 +8,7 @@ const AddUser = ({callback = () => {}}) => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="AddUser min-h-[500px] flex items-center justify-center">
+    <div className="AddUser min-h-[500px] mt-20 flex items-center justify-center">
       <Box
         component="form"
         sx={{
@@ -32,7 +32,7 @@ const AddUser = ({callback = () => {}}) => {
       >
         <h1 className="text-8xl mb-12 font-bold">
           The Category Game
-          <PsychologyIcon className="text-9xl ml-4" />
+          <PsychologyIcon className="game-icon" />
         </h1>
         <div className="bg-white p-5 flex items-center justify-center gap-5">
           <div className="text-5xl">
@@ -45,7 +45,8 @@ const AddUser = ({callback = () => {}}) => {
             onChange={(event ) => {
               setName(event.target.value);
             }}
-            variant="outlined" />
+            variant="outlined"
+          />
           {loading && (
             <CircularProgress />
           )}
