@@ -21,7 +21,7 @@ a {
     min-width: 500px;
 }
 
-.game-icon {
+.game-icon svg {
     @apply text-9xl ml-4;
 }
 

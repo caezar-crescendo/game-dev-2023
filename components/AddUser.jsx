@@ -30,9 +30,11 @@ const AddUser = ({callback = () => {}}) => {
           callback(entry);
         }}
       >
-        <h1 className="text-8xl mb-12 font-bold">
+        <h1 className="text-8xl mb-12 font-bold flex">
           The Category Game
-          <PsychologyIcon className="game-icon" />
+          <div className="game-icon">
+            <PsychologyIcon />
+          </div>
         </h1>
         <div className="bg-white p-5 flex items-center justify-center gap-5">
           <div className="text-5xl">
