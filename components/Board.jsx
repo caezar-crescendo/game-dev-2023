@@ -50,16 +50,16 @@ const Board = ({user, questions}) => {
                 user={user}
                 questions={questions}
               />
-          </Paper>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper className="p-5 min-h-[90vh]">
+              <ScoreBoardContainer users={users}/>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <Paper className="p-5 min-h-[90vh]">
-            <ScoreBoardContainer users={users} />
-          </Paper>
-        </Grid>
-      </Grid>
-    )}
-  </div>
+      )}
+    </div>
   )
 }
 

@@ -4,6 +4,7 @@ import { Alert, Box, CircularProgress, Container, Snackbar, TextField } from '@m
 
 const CategoryQuestionContainer = ({user, questions}) => {
   const timerRef = useRef();
+  const inputAnswerRef = useRef();
   const [pleaseWait, setPleaseWait] = useState(true);
   const [answer, setAnswer] = useState("");
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -40,6 +41,7 @@ const CategoryQuestionContainer = ({user, questions}) => {
           if (prevCount + 1 === questions.length) {
             clearInterval(timer);
             timerRef.current.innerHTML = `Game Over!`;
+            inputAnswerRef.current.remove();
             setPleaseWait(false);
             // publishEntry(user.sys.id);
             console.log('Timer Stopped!');
@@ -74,9 +76,8 @@ const CategoryQuestionContainer = ({user, questions}) => {
         </div>
       )}
       <div className={pleaseWait ? 'hidden' : ''}>
-        <div ref={timerRef} className="questionTimer text-8xl mb-14">
-        </div>
-        <div className="text-3xl font-bold mb-6">{question?.fields?.name}</div>
+        <div ref={timerRef} className="questionTimer text-8xl mb-14" />
+        <div className="text-5xl font-bold mb-6">{question?.fields?.name}</div>
         <div className="flex flex-col items-center justify-center gap-5">
           <Box
             component="form"
@@ -101,7 +102,8 @@ const CategoryQuestionContainer = ({user, questions}) => {
             <div className="flex items-center justify-center gap-5">
               <TextField
                 required
-                className="max-w-[500px] w-full"
+                ref={inputAnswerRef}
+                className="max-w-[500px] w-full TextField-answer"
                 value={answer}
                 onChange={(event ) => {
                   setAnswer(event.target.value);

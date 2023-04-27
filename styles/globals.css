@@ -16,3 +16,16 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.TextField-player-name.MuiTextField-root {
+    min-width: 500px;
+}
+
+.TextField-player-name .MuiInputBase-input {
+    @apply text-5xl font-bold;
+}
+
+.TextField-answer .MuiInputBase-input {
+    font-size: 28px;
+    text-align: center;
+}

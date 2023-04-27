@@ -1,30 +1,41 @@
-import { Grid } from '@mui/material';
+import { Grid, List, ListItem } from '@mui/material';
 
 const ScoreBoardContainer = ({users}) => {
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <div className="text-2xl bold">Players</div>
-        {users.length ? users.map(({fields}, index) => {
-          return (
-            <div key={index} className="text-xl">
-              {fields.name}
+    <List>
+      <ListItem>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <div className="text-lg font-bold">
+              Players
             </div>
-          );
-        }) : ''}
-      </Grid>
-      <Grid item xs={6}>
-        <div className="text-2xl bold">Score</div>
-        {users.length ? users.map(({fields}, index) => {
-          return (
-            <div key={index} className="text-xl">
-              {fields.points}
+          </Grid>
+          <Grid item xs={4}>
+            <div className="text-lg font-bold">
+              Score
             </div>
-          );
-        }) : ''}
-      </Grid>
-    </Grid>
+          </Grid>
+        </Grid>
+      </ListItem>
+      {users.length ? users.map(({fields}, index) => (
+        <ListItem key={index} className="border-b-2 border-gray-300">
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+
+              <div className="text-2xl">
+                {fields.name}
+              </div>
+            </Grid>
+            <Grid item xs={4}>
+              <div className="text-2xl">
+                {fields.points}
+              </div>
+            </Grid>
+          </Grid>
+        </ListItem>
+      )) : ''}
+    </List>
   );
 }
 
