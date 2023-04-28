@@ -21,7 +21,7 @@ const CategoryQuestionContainer = ({user, questions}) => {
   };
 
   useEffect(() => {
-    let seconds = 23;
+    let seconds = 33;
     let waitTimer = 3;
     const timer = setInterval(function() {
       waitTimer--;
@@ -34,7 +34,7 @@ const CategoryQuestionContainer = ({user, questions}) => {
         setPleaseWait(false);
       }
       if (seconds === 0) {
-        seconds = 23;
+        seconds = 33;
         waitTimer = 3;
         setPleaseWait(true);
         setQuestionIndex(prevCount => {
