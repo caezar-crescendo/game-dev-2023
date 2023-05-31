@@ -6,6 +6,7 @@ import Board from '../components/Board';
 
 export default function Home(props) {
   // console.log('props', props);
+  const { blocks } = props;
   const [user, setUser] = useState(null);
 
   return (
@@ -18,7 +19,7 @@ export default function Home(props) {
         ) : (
           <Board
             user={user}
-            questions={props.questions?.items || []}
+            blocks={blocks?.items || []}
           />
         )}
       </Container>
@@ -28,12 +29,12 @@ export default function Home(props) {
 
 export async function getStaticProps() {
   const users = await getEntriesByContentType("user", true);
-  const questions = await getEntriesByContentType("question");
+  const blocks = await getEntriesByContentType("block");
 
   return {
     props: {
       users,
-      questions,
+      blocks,
     },
   };
 }

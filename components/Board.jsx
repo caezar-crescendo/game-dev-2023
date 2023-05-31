@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { getEntriesByContentType } from '../lib/helpers';
 import CategoryQuestionContainer from './CategoryQuestionContainer';
 import ScoreBoardContainer from './ScoreBoardContainer';
+import BoardGame from './BoardGame';
 
-const Board = ({user, questions}) => {
+const Board = ({user, blocks}) => {
   const loading = useRef(true);
   const [users, setUsers] = useState([]);
 
@@ -12,9 +13,9 @@ const Board = ({user, questions}) => {
     const activeUser = users.find(item => item.sys.id === user.sys.id);
 
     return (
-      <div className="grid grid-cols-2">
-        <div>{activeUser.fields.name}</div>
-        <div>Score: {activeUser.fields.points}</div>
+      <div className="grid grid-cols-2 mb-6">
+        <div>Player name: <span className="font-bold">{activeUser.fields.name}</span></div>
+        <div>Score: <span className="font-bold">{activeUser.fields.points}</span></div>
       </div>
     );
   }
@@ -43,19 +44,14 @@ const Board = ({user, questions}) => {
         </div>
       ) : (
         <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <Paper className="p-5 min-h-[90vh]">
+          <Grid item xs={9}>
+            <Paper className="p-5 min-h-[90vh] shadow-none rounded-none">
               {renderPlayerInfo()}
-              <CategoryQuestionContainer
-                user={user}
-                questions={questions}
-              />
+              <BoardGame blocks={blocks || []} />
             </Paper>
           </Grid>
-          <Grid item xs={4}>
-            <Paper className="p-5 min-h-[90vh]">
-              <ScoreBoardContainer users={users}/>
-            </Paper>
+          <Grid item xs={3}>
+            <ScoreBoardContainer users={users}/>
           </Grid>
         </Grid>
       )}

@@ -33,3 +33,17 @@ a {
     font-size: 28px;
     text-align: center;
 }
+
+.box-avatar {
+    width: 100%;
+    height: 90px;
+    background-position: center;
+    background-size: cover;
+    background-color: #3f474b;
+    cursor: pointer;
+}
+
+.box-avatar:hover {
+    background-color: #747d81;
+    opacity: 0.7;
+}
