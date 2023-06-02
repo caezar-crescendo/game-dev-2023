@@ -2,10 +2,13 @@ import { Box, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
 import { createEntry } from '../lib/helpers';
 import PsychologyIcon from '@mui/icons-material/Psychology';
+import styles from '../styles/AddUser.module.css';
 
 const AddUser = ({callback = () => {}}) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
+  const GameName = 'MixMatch';
+  const letters = GameName.split('');
 
   return (
     <div className="AddUser min-h-[500px] mt-20 flex items-center justify-center">
@@ -31,7 +34,9 @@ const AddUser = ({callback = () => {}}) => {
         }}
       >
         <h1 className="text-8xl mb-12 font-bold flex">
-          The Category Game
+          <div className={styles.logo}>
+            {letters.map((letter) => <span>{letter}</span>)}
+          </div>
           <div className="game-icon">
             <PsychologyIcon />
           </div>

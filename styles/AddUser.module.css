@@ -1,0 +1,52 @@
+.logo > span {
+        display: inline-block;
+        transform: scale(0);
+        animation-duration:  5s;
+        animation-iteration-count: infinite;
+        transition: all 0.5s;
+}
+
+.logo > span:nth-child(1) {
+        animation-name: letter1;
+        
+}
+.logo > span:nth-child(2) {
+        transform: rotate(-5deg);
+}
+.logo > span:nth-child(3) {
+        transform: rotate(5deg);
+}
+.logo > span:nth-child(4) {
+        transform: rotate(-10deg);
+}
+.logo > span:nth-child(5) {
+        transform: rotate(-10deg);
+}
+.logo > span:nth-child(6) {
+        transform: rotate(-10deg);
+}
+.logo > span:nth-child(7) {
+        transform: rotate(-10deg);
+}
+.logo > span:nth-child(8) {
+        transform: rotate(-10deg);
+}
+
+
+/* Animations */
+@keyframes letter1 {
+        0%   {transform: scale(0.25);}
+        3%  {transform: scale(1);}
+        6% {
+                transform: rotate(-5deg) scale(1);     
+        }
+        9% {
+                transform:  rotate(-10deg) scale(1);     
+        }
+        12% {
+                transform: rotate(5deg) scale(1);     
+        }
+        9% {
+                transform:  rotate(10deg) scale(1);     
+        }
+}
