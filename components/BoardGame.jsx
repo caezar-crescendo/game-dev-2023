@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { updateBlocks } from '../lib/helpers';
+import { getEntriesByContentType, updateBlocks, updateUser } from '../lib/helpers';
 
-const BoardGame = ({ isAdmin = false, user, socket, blocksArangement, blocks = [] }) => {
+const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, blocks = [] }) => {
   const [blks, setBlks] = useState(blocks);
   const [selected, setSelected] = useState([]);
+  let nextPlayerTurnIndex = 0;
+  let playerTurn = users.find((item, index) => {
+    // if (user.sys.id === item.sys.id) {
+    if (typeof item.fields.playerTurn === 'object' ? item.fields.playerTurn['en-US'] : item.fields.playerTurn) {
+      nextPlayerTurnIndex = (users.length === (index + 1)) ? 0 : index + 1;
+      // console.log('nextPlayerTurnIndex', nextPlayerTurnIndex);
+      return item;
+    }
+  })
 
   const resetSelected = () => {
     const cloneBlocks = [...blks];
@@ -38,7 +47,7 @@ const BoardGame = ({ isAdmin = false, user, socket, blocksArangement, blocks = [
       setBlks(data);
     });
     return () => socket.off('blocks.list.update');
-  }, [socket, blks, selected]);
+  }, [socket, blks, selected, users]);
 
   return (
     <Grid container spacing={1} justifyContent="center">
@@ -57,7 +66,7 @@ const BoardGame = ({ isAdmin = false, user, socket, blocksArangement, blocks = [
                 backgroundImage: `url(${block.fields.isSelected || block.fields.isPaired || isAdmin ? imgUrl : ''})`,
               }}
               onClick={async () => {
-                if (!(typeof user.fields.playerTurn === 'object' ? user.fields.playerTurn['en-US'] : user.fields.playerTurn) || block.fields.isSelected || block.fields.isPaired) {
+                if ((playerTurn.sys.id !== user.sys.id) || block.fields.isSelected || block.fields.isPaired) {
                   return;
                 }
 
@@ -69,6 +78,12 @@ const BoardGame = ({ isAdmin = false, user, socket, blocksArangement, blocks = [
                   ) {
                     updateBlocks(clickedBlocks[0].sys.id, false, true);
                     updateBlocks(clickedBlocks[1].sys.id, false, true);
+                    updateUser(user.sys.id).then(async (data) => {
+                      await updateUser(users[nextPlayerTurnIndex].sys.id, true);
+
+                      const u = await getEntriesByContentType("user");
+                      socket.emit('user.create', u.items);
+                    });
                   }
 
                   setSelected(clickedBlocks);

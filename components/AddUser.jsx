@@ -18,13 +18,13 @@ const AddUser = ({users = [], socket, callback = () => {}}) => {
         autoComplete="off"
         onSubmit={async (e) => {
           e.preventDefault();
-          let entry = users.find(item => item.fields.name.toLowerCase() === name.toLowerCase());
+          let entry = users.find(item => item.fields.name.toLowerCase().trim() === name.toLowerCase().trim());
 
           if (!entry) {
             setLoading(true);
             entry = await createEntry({
               name: {
-                "en-US": name,
+                "en-US": name.trim(),
               },
             }, 'user');
 
@@ -51,7 +51,7 @@ const AddUser = ({users = [], socket, callback = () => {}}) => {
             className="TextField-player-name"
             value={name}
             onChange={(event ) => {
-              setName(event.target.value.trim());
+              setName(event.target.value);
             }}
             variant="outlined"
           />

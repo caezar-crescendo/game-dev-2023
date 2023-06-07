@@ -4,14 +4,14 @@ import AddUser from '../components/AddUser';
 import { Container } from '@mui/material';
 import Board from '../components/Board';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:4000');
-// const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
+// const socket = io.connect('http://localhost:4000');
+const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
 
 export default function Home(props) {
   const { blocks, gameSettings, users } = props;
   const [user, setUser] = useState(null);
   const gameSettingBlocksArrangement = gameSettings.items[0].fields.blocksArangement;
-
+  console.log('props', props);
   return (
     <div className="pt-5">
       <Container maxWidth="xl">

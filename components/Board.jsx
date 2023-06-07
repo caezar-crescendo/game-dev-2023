@@ -23,6 +23,7 @@ const Board = ({blocks, socket, user, blocksArangement}) => {
 
   useEffect(() => {
     socket.on('users.list.update', (data) => {
+      // console.log('users.list.update', data);
       setUsers(data);
     });
   }, [socket]);
@@ -38,6 +39,7 @@ const Board = ({blocks, socket, user, blocksArangement}) => {
               blocks={blocks || []}
               socket={socket}
               user={user}
+              users={users}
             />
           </Paper>
         </Grid>

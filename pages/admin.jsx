@@ -3,11 +3,13 @@ import BoardGame from '../components/BoardGame';
 import ScoreBoardContainer from '../components/ScoreBoardContainer';
 import { Grid, Paper, Container, Button } from '@mui/material';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:4000');
-// const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
+import { useEffect, useState } from 'react';
+// const socket = io.connect('http://localhost:4000');
+const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
 
 export default function Admin(props) {
-  const { blocks, users, gameSettings } = props;
+  const { blocks, intitialusers, gameSettings } = props;
+  const [users, setUsers] = useState(intitialusers.items || []);
   console.log('props', props);
   const user = {
     "metadata": {
@@ -60,10 +62,17 @@ export default function Admin(props) {
 
   const resetBoardGame = async () => {
     const shuffledBlocks = shuffleArray(blocks.items);
-    const ids = shuffledBlocks.map((blk) => blk.sys.id)
+    const ids = shuffledBlocks.map((blk) => blk.sys.id);
     const entry = await updateGameSettings('7I65AWdklNktCr8lqpXFHe', ids);
-    console.log('entry', entry);
+    // console.log('entry', entry);
   };
+
+  useEffect(() => {
+    socket.on('users.list.update', (data) => {
+      // console.log('users.list.update', data);
+      setUsers(data);
+    });
+  }, [socket]);
 
   return (
     <div className="pt-5">
@@ -91,12 +100,13 @@ export default function Admin(props) {
                 blocks={blocks.items || []}
                 socket={socket}
                 user={user}
+                users={users}
                 isAdmin={true}
               />
             </Paper>
           </Grid>
           <Grid item xs={3}>
-            <ScoreBoardContainer users={users.items}/>
+            <ScoreBoardContainer users={users}/>
           </Grid>
         </Grid>
       </Container>
@@ -105,13 +115,13 @@ export default function Admin(props) {
 }
 
 export async function getStaticProps() {
-  const users = await getEntriesByContentType("user");
+  const intitialusers = await getEntriesByContentType("user");
   const blocks = await getEntriesByContentType("block");
   const gameSettings = await getEntriesByContentType("gameSettings");
 
   return {
     props: {
-      users,
+      intitialusers,
       blocks,
       gameSettings,
     },
