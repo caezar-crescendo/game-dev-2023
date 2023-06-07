@@ -35,38 +35,38 @@ const ScoreBoardContainer = ({users}) => {
   }
 
   return (
-    <List>
+    <List className="o-flow mx-4 ">
       <ListItem>
         <Grid container>
           <Grid item xs={10}>
-            <div className="text-lg font-bold">
+            <div className="text-lg font-bold main-color">
               Players
             </div>
           </Grid>
           <Grid item xs={2}>
-            <div className="text-lg font-bold">
+            <div className="text-lg font-bold main-color">
               Score
             </div>
           </Grid>
         </Grid>
       </ListItem>
       {users.length ? users.map(({fields}, index) => (
-        <ListItem key={index} className="border-b-2 border-gray-300">
+        <ListItem key={index} className="border-b-2 border-gray-300 bg-gray-light mt-4">
           <Grid container>
             <Grid item xs={10}>
               <Grid container spacing={1} alignItems="center">
                 <Grid item xs={3}>
                   <Avatar {...stringAvatar(fields.name)} />
                 </Grid>
-                <Grid item xs={8}>
-                  <div className="text-xl">
+                <Grid item xs={8} className="flex justify-start items-center">
+                  <div className="text-lg">
                     {fields.name}
                   </div>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <div className="text-xl">
+            <Grid item xs={2} className="flex justify-center items-center">
+              <div className="text-lg text-center">
                 {fields.points}
               </div>
             </Grid>
