@@ -5,7 +5,6 @@ const require = createRequire(
     import.meta.url);
 const contentful = require("contentful-management");
 const spaceImport = require("contentful-import");
-const exportFile = require("./space-export/space.json");
 const inquirer = require("inquirer");
 
 // const chalk = require("chalk");
