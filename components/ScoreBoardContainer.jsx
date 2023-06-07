@@ -51,15 +51,15 @@ const ScoreBoardContainer = ({users}) => {
         </Grid>
       </ListItem>
       {users.length ? users.map(({fields}, index) => (
-        <ListItem key={index} className="border-b-2 border-gray-300">
-          <Grid container>
+        <ListItem key={index} className={`border-b-2 border-gray-300 ${fields.playerTurn ? 'bg-gelb2' : ''}`}>
+          <Grid container alignItems="center">
             <Grid item xs={10}>
               <Grid container spacing={1} alignItems="center">
                 <Grid item xs={3}>
                   <Avatar {...stringAvatar(fields.name)} />
                 </Grid>
                 <Grid item xs={8}>
-                  <div className="text-xl">
+                  <div className={`text-xl ${fields.playerTurn ? 'font-bold' : ''}`}>
                     {fields.name}
                   </div>
                 </Grid>

@@ -1,9 +1,9 @@
 import { Box, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
-import { createEntry } from '../lib/helpers';
+import { createEntry, getEntriesByContentType } from '../lib/helpers';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 
-const AddUser = ({callback = () => {}}) => {
+const AddUser = ({users = [], socket, callback = () => {}}) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -16,17 +16,23 @@ const AddUser = ({callback = () => {}}) => {
         }}
         noValidate
         autoComplete="off"
-        onSubmit={async  (e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          setLoading(true);
-          const entry = await createEntry({
-            name: {
-              "en-US": name,
-            },
-          }, 'user');
+          let entry = users.find(item => item.fields.name.toLowerCase() === name.toLowerCase());
 
-          console.log('entry', entry)
-          setLoading(false);
+          if (!entry) {
+            setLoading(true);
+            entry = await createEntry({
+              name: {
+                "en-US": name,
+              },
+            }, 'user');
+
+            setLoading(false);
+          }
+
+          const u = await getEntriesByContentType("user", true);
+          socket.emit('user.create', u.items);
           callback(entry);
         }}
       >
@@ -45,7 +51,7 @@ const AddUser = ({callback = () => {}}) => {
             className="TextField-player-name"
             value={name}
             onChange={(event ) => {
-              setName(event.target.value);
+              setName(event.target.value.trim());
             }}
             variant="outlined"
           />
