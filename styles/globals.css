@@ -46,15 +46,18 @@ a {
     cursor: pointer;
 }
 
+.box-is-selected {
+    box-shadow: 0 0 20px 10px #ffda00;
+    position: relative;
+}
+
 .box-avatar:hover {
     background-color: #747d81;
     opacity: 0.7;
 }
 /* #3f474b; */
 .bg-gray-light {
-    background: #929598!important;
-    border-radius: 50px;
-    margin-bottom: 10px;
+    background: #6c7885 !important;
     color: #eeeeee;
 }
 
@@ -63,6 +66,6 @@ a {
 }
 
 .o-flow {
-    overflow: scroll;
-    height: 90vh;
+    overflow-y: auto;
+    height: 95vh;
 }
