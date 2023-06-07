@@ -50,6 +50,9 @@ const AddUser = ({users = [], socket, callback = () => {}}) => {
             required
             className="TextField-player-name"
             value={name}
+            inputProps={{
+              maxLength: 20,
+            }}
             onChange={(event ) => {
               setName(event.target.value);
             }}

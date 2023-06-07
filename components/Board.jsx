@@ -5,6 +5,11 @@ import BoardGame from './BoardGame';
 
 const Board = ({blocks, socket, user, blocksArangement}) => {
   const [users, setUsers] = useState([]);
+  let playerTurn = users.find((item) => {
+    if (typeof item.fields.playerTurn === 'object' ? item.fields.playerTurn['en-US'] : item.fields.playerTurn) {
+      return item;
+    }
+  })
 
   const renderPlayerInfo = () => {
     if (!users.length) {
@@ -14,16 +19,16 @@ const Board = ({blocks, socket, user, blocksArangement}) => {
     const activeUser = users.find(item => item.sys.id === user.sys.id);
 
     return activeUser ? (
-      <div className="grid grid-cols-2 mb-6">
+      <div className="grid grid-cols-3 mb-6">
         <div>Player name: <span className="font-bold">{activeUser.fields.name}</span></div>
-        <div>Score: <span className="font-bold">{activeUser.fields.points}</span></div>
+        <div className="text-right">Player on move: <span className="font-bold">{playerTurn?.fields?.name}</span></div>
+        <div className="text-right">Score: <span className="font-bold">{activeUser.fields.points}</span></div>
       </div>
     ) : '';
   }
 
   useEffect(() => {
     socket.on('users.list.update', (data) => {
-      // console.log('users.list.update', data);
       setUsers(data);
     });
   }, [socket]);

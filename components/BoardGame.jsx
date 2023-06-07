@@ -7,10 +7,8 @@ const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, blo
   const [selected, setSelected] = useState([]);
   let nextPlayerTurnIndex = 0;
   let playerTurn = users.find((item, index) => {
-    // if (user.sys.id === item.sys.id) {
     if (typeof item.fields.playerTurn === 'object' ? item.fields.playerTurn['en-US'] : item.fields.playerTurn) {
       nextPlayerTurnIndex = (users.length === (index + 1)) ? 0 : index + 1;
-      // console.log('nextPlayerTurnIndex', nextPlayerTurnIndex);
       return item;
     }
   })
@@ -61,7 +59,7 @@ const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, blo
         return (
           <Grid key={index} item xs={1}>
             <Box
-              className={`box-avatar`}
+              className={`box-avatar ${block.fields.isSelected ? 'box-is-selected' : ''}`}
               sx={{
                 backgroundImage: `url(${block.fields.isSelected || block.fields.isPaired || isAdmin ? imgUrl : ''})`,
               }}
