@@ -4,8 +4,8 @@ import ScoreBoardContainer from '../components/ScoreBoardContainer';
 import { Grid, Paper, Container, Button } from '@mui/material';
 import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
-const socket = io.connect('http://localhost:4000');
-// const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
+// const socket = io.connect('http://localhost:4000');
+const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
 
 export default function Admin(props) {
   const { blocks, intitialusers, gameSettings } = props;
