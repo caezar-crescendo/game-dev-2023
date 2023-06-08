@@ -50,5 +50,6 @@ export async function getStaticProps() {
       blocks,
       gameSettings,
     },
+    revalidate: 10,
   };
 }
