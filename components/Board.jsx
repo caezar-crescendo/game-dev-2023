@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ScoreBoardContainer from './ScoreBoardContainer';
 import BoardGame from './BoardGame';
 
-const Board = ({blocks, socket, user, blocksArangement}) => {
+const Board = ({blocks, socket, user, blocksArangement, usersArrangement}) => {
   const [users, setUsers] = useState([]);
   let playerTurn = users.find((item) => {
     if (typeof item.fields.playerTurn === 'object' ? item.fields.playerTurn['en-US'] : item.fields.playerTurn) {
@@ -41,6 +41,7 @@ const Board = ({blocks, socket, user, blocksArangement}) => {
             {renderPlayerInfo()}
             <BoardGame
               blocksArangement={blocksArangement || []}
+              usersArrangement={usersArrangement || []}
               blocks={blocks || []}
               socket={socket}
               user={user}

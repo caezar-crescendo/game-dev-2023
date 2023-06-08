@@ -1,4 +1,4 @@
-import { getEntriesByContentType, updateGameSettings } from '../lib/helpers';
+import { getEntriesByContentType, updateGameSettings, updateUser } from '../lib/helpers';
 import BoardGame from '../components/BoardGame';
 import ScoreBoardContainer from '../components/ScoreBoardContainer';
 import { Grid, Paper, Container, Button } from '@mui/material';
@@ -51,6 +51,7 @@ export default function Admin(props) {
     }
   };
   const gameSettingBlocksArrangement = gameSettings.items[0].fields.blocksArangement;
+  const gameSettingUsersArrangement = gameSettings.items[0].fields.usersArrangement;
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -63,8 +64,9 @@ export default function Admin(props) {
   const resetBoardGame = async () => {
     const shuffledBlocks = shuffleArray(blocks.items);
     const ids = shuffledBlocks.map((blk) => blk.sys.id);
-    const entry = await updateGameSettings('7I65AWdklNktCr8lqpXFHe', ids);
-    // console.log('entry', entry);
+    await updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
+      blocksArangement: { 'en-US': ids }
+    });
   };
 
   useEffect(() => {
@@ -88,8 +90,27 @@ export default function Admin(props) {
             Reset Board Game
           </Button>
           <Button
-            variant="outlined">
-            Reset Score Board
+            variant="outlined"
+            onClick={async () => {
+              const getUsers = await getEntriesByContentType("user");
+              console.log('getUsers', getUsers);
+              if (getUsers.items.length) {
+                await updateUser(getUsers.items[0].sys.id, true); // update next player
+                getEntriesByContentType("user").then((data) => {
+                  socket.emit('user.create', data.items);
+
+                  const usersList = data.items.map(u => {
+                    return u.sys.id;
+                  });
+                  updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
+                    usersArrangement: { 'en-US': usersList }
+                  });
+                  socket.emit('blocks', blocks.items);
+                })
+              }
+            }}
+          >
+            Start Game
           </Button>
         </div>
         <Grid container spacing={2}>
@@ -97,6 +118,7 @@ export default function Admin(props) {
             <Paper className="p-5 min-h-[90vh] shadow-none rounded-none">
               <BoardGame
                 blocksArangement={gameSettingBlocksArrangement || []}
+                usersArrangement={gameSettingUsersArrangement || []}
                 blocks={blocks.items || []}
                 socket={socket}
                 user={user}

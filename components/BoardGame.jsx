@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { getEntriesByContentType, updateBlocks, updateUser } from '../lib/helpers';
+import { updateBlocks, updateUser } from '../lib/helpers';
 
-const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, blocks = [] }) => {
+const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, usersArrangement, blocks = [] }) => {
   const [blks, setBlks] = useState(blocks);
   const [selected, setSelected] = useState([]);
   let nextPlayerTurnIndex = 0;
-  let playerTurn = users.find((item, index) => {
+  let PlayerTurnIndex = 0;
+  let playerTurn = users.find((item, i) => {
     if (typeof item.fields.playerTurn === 'object' ? item.fields.playerTurn['en-US'] : item.fields.playerTurn) {
-      nextPlayerTurnIndex = (users.length === (index + 1)) ? 0 : index + 1;
+      const currentPlayerTurn = usersArrangement.findIndex((val) => val === item.sys.id)
+      nextPlayerTurnIndex = (usersArrangement.length === (currentPlayerTurn + 1)) ? 0 : currentPlayerTurn + 1;
+      PlayerTurnIndex = i;
       return item;
     }
   })
@@ -64,28 +67,15 @@ const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, blo
                 backgroundImage: `url(${block.fields.isSelected || block.fields.isPaired || isAdmin ? imgUrl : ''})`,
               }}
               onClick={async () => {
-                if ((playerTurn.sys.id !== user.sys.id) || block.fields.isSelected || block.fields.isPaired) {
+                // updateBlocks(block.sys.id, false, false);
+                // return;
+                if ((playerTurn.sys.id !== user.sys.id) || block.fields.isSelected || block.fields.isPaired || selected.length === 2) {
                   return;
                 }
 
                 const clickedBlocks = [...selected, block];
                 if (clickedBlocks.length <= 2) {
-                  if (
-                    clickedBlocks.length === 2 &&
-                    clickedBlocks[0].fields.name === clickedBlocks[1].fields.name
-                  ) {
-                    updateBlocks(clickedBlocks[0].sys.id, false, true);
-                    updateBlocks(clickedBlocks[1].sys.id, false, true);
-                    updateUser(user.sys.id).then(async (data) => {
-                      await updateUser(users[nextPlayerTurnIndex].sys.id, true);
-
-                      const u = await getEntriesByContentType("user");
-                      socket.emit('user.create', u.items);
-                    });
-                  }
-
                   setSelected(clickedBlocks);
-
                   setBlks((prevState) => {
                     const activeBlock = prevState.findIndex(prev => prev.sys.id === block.sys.id);
 
@@ -93,6 +83,25 @@ const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, blo
                     socket.emit('blocks', blks);
                     return [...prevState];
                   })
+
+                  if (
+                    clickedBlocks.length === 2
+                  ) {
+                    if (clickedBlocks[0].fields.name === clickedBlocks[1].fields.name) {
+                      updateBlocks(clickedBlocks[0].sys.id, false, true);
+                      updateBlocks(clickedBlocks[1].sys.id, false, true);
+                    }
+                    const clonedUsers = [...users];
+                    await updateUser(user.sys.id, false, clickedBlocks[0].fields.name === clickedBlocks[1].fields.name).then(async (d) => {
+                      clonedUsers[PlayerTurnIndex].fields.playerTurn = false;
+                      clonedUsers[PlayerTurnIndex].fields.points = d.fields.points['en-US'];
+                      const usersNextTurnIndex = users.findIndex(u => u.sys.id === usersArrangement[nextPlayerTurnIndex]);
+                      clonedUsers[usersNextTurnIndex].fields.playerTurn = true;
+                      await updateUser(usersArrangement[nextPlayerTurnIndex], true).then(async (e) => {
+                        socket.emit('user.create', clonedUsers);
+                      })
+                    });
+                  }
                 }
               }}
             />

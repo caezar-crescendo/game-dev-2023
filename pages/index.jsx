@@ -11,6 +11,8 @@ export default function Home(props) {
   const { blocks, gameSettings, users } = props;
   const [user, setUser] = useState(null);
   const gameSettingBlocksArrangement = gameSettings.items[0].fields.blocksArangement;
+  const gameSettingUsersArrangement = gameSettings.items[0].fields.usersArrangement;
+
   console.log('props', props);
   return (
     <div className="pt-5">
@@ -28,6 +30,7 @@ export default function Home(props) {
             socket={socket}
             user={user}
             blocksArangement={gameSettingBlocksArrangement || []}
+            usersArrangement={gameSettingUsersArrangement || []}
             blocks={blocks?.items || []}
           />
         )}
