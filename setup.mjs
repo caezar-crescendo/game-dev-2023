@@ -140,7 +140,6 @@ inquirer
             spaceId: spaceId,
             managementToken: managementToken,
             environmentId: envId,
-            content: exportFile,
           });
         } catch (error) {
           console.log(chalk.red(`An error occured!`), error);
