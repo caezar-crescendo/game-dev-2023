@@ -20,6 +20,7 @@ export default function Home(props) {
         {!user ? (
           <AddUser
             socket={socket}
+            gameSettings={gameSettings.items[0].fields}
             users={users.items}
             callback={(entry) => {
               setUser(entry);

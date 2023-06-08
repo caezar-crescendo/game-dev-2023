@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { createEntry, getEntriesByContentType } from '../lib/helpers';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 
-const AddUser = ({users = [], socket, callback = () => {}}) => {
+const AddUser = ({users = [], gameSettings, socket, callback = () => {}}) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,7 @@ const AddUser = ({users = [], socket, callback = () => {}}) => {
           e.preventDefault();
           let entry = users.find(item => item.fields.name.toLowerCase().trim() === name.toLowerCase().trim());
 
-          if (!entry) {
+          if (!entry && !gameSettings.inProgress) {
             setLoading(true);
             entry = await createEntry({
               name: {
@@ -37,7 +37,7 @@ const AddUser = ({users = [], socket, callback = () => {}}) => {
         }}
       >
         <h1 className="text-8xl mb-12 font-bold flex">
-          The Category Game
+          The MixMatch Game
           <div className="game-icon">
             <PsychologyIcon />
           </div>
@@ -62,6 +62,11 @@ const AddUser = ({users = [], socket, callback = () => {}}) => {
             <CircularProgress />
           )}
         </div>
+        {gameSettings.inProgress && (
+          <div className="text-xl text-red-500 text-center mt-4">
+            A game is currently in progress
+          </div>
+        )}
       </Box>
     </div>
   )

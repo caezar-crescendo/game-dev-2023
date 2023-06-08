@@ -65,7 +65,8 @@ export default function Admin(props) {
     const shuffledBlocks = shuffleArray(blocks.items);
     const ids = shuffledBlocks.map((blk) => blk.sys.id);
     await updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
-      blocksArangement: { 'en-US': ids }
+      blocksArangement: { 'en-US': ids },
+      inProgress: { 'en-US': false }
     });
   };
 
@@ -95,18 +96,20 @@ export default function Admin(props) {
               const getUsers = await getEntriesByContentType("user");
               console.log('getUsers', getUsers);
               if (getUsers.items.length) {
-                await updateUser(getUsers.items[0].sys.id, true); // update next player
-                getEntriesByContentType("user").then((data) => {
-                  socket.emit('user.create', data.items);
+                if (!getUsers.items.find(i => i.fields.playerTurn)) {
+                  await updateUser(getUsers.items[0].sys.id, true); // update next player
+                  getUsers.items[0].fields.playerTurn = true;
+                }
+                socket.emit('user.create', getUsers.items);
 
-                  const usersList = data.items.map(u => {
-                    return u.sys.id;
-                  });
-                  updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
-                    usersArrangement: { 'en-US': usersList }
-                  });
-                  socket.emit('blocks', blocks.items);
-                })
+                const usersList = getUsers.items.map(u => {
+                  return u.sys.id;
+                });
+                await updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
+                  usersArrangement: { 'en-US': usersList },
+                  inProgress: { 'en-US': true }
+                });
+                socket.emit('blocks', blocks.items);
               }
             }}
           >
