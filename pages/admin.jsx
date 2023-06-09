@@ -86,6 +86,13 @@ export default function Admin(props) {
     await updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
       blocksArangement: { 'en-US': ids },
       inProgress: { 'en-US': false }
+    }).then(data => {
+      setGameSettings(prevState => {
+        prevState[0].fields.blocksArangement = data?.fields?.blocksArangement['en-US'];
+
+        socket.emit('gameSettings', prevState);
+        return [...prevState];
+      });
     });
   };
 
