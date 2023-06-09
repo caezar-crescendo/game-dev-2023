@@ -8,9 +8,27 @@ import { useEffect, useState } from 'react';
 const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET);
 
 export default function Admin(props) {
-  const { blocks, intitialusers, gameSettings } = props;
-  const [users, setUsers] = useState(intitialusers.items || []);
-  console.log('props', props);
+  const { blocks } = props;
+  const [users, setUsers] = useState([]);
+  const [gameSettings, setGameSettings] = useState([]);
+
+  useEffect(() => {
+    const loadInitialData = async () => {
+      const users = await getEntriesByContentType("user", true);
+      const gameSettings = await getEntriesByContentType("gameSettings");
+
+      setGameSettings(gameSettings.items || []);
+      setUsers(users.items || []);
+
+      // console.log('loadInitialData', {
+      //   users: users.items || [],
+      //   gameSettings: gameSettings.items || [],
+      // });
+    };
+
+    loadInitialData().then(() => {});
+  }, []);
+
   const user = {
     "metadata": {
       "tags": []
@@ -50,8 +68,9 @@ export default function Admin(props) {
       "playerTurn": true
     }
   };
-  const gameSettingBlocksArrangement = gameSettings.items[0].fields.blocksArangement;
-  const gameSettingUsersArrangement = gameSettings.items[0].fields.usersArrangement;
+  // console.log('gameSettingssss', gameSettings);
+  const gameSettingBlocksArrangement = gameSettings[0]?.fields?.blocksArangement;
+  const gameSettingUsersArrangement = gameSettings[0]?.fields?.usersArrangement;
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -94,7 +113,7 @@ export default function Admin(props) {
             variant="outlined"
             onClick={async () => {
               const getUsers = await getEntriesByContentType("user");
-              console.log('getUsers', getUsers);
+              // console.log('getUsers', getUsers);
               if (getUsers.items.length) {
                 if (!getUsers.items.find(i => i.fields.playerTurn)) {
                   await updateUser(getUsers.items[0].sys.id, true); // update next player
@@ -108,7 +127,16 @@ export default function Admin(props) {
                 await updateGameSettings('7I65AWdklNktCr8lqpXFHe', {
                   usersArrangement: { 'en-US': usersList },
                   inProgress: { 'en-US': true }
+                }).then(data => {
+                  setGameSettings(prevState => {
+                    prevState[0].fields.usersArrangement = data?.fields?.usersArrangement['en-US'];
+                    prevState[0].fields.inProgress = data?.fields?.inProgress['en-US'];
+
+                    socket.emit('gameSettings', prevState);
+                    return [...prevState];
+                  });
                 });
+
                 socket.emit('blocks', blocks.items);
               }
             }}
@@ -140,15 +168,12 @@ export default function Admin(props) {
 }
 
 export async function getStaticProps() {
-  const intitialusers = await getEntriesByContentType("user");
   const blocks = await getEntriesByContentType("block");
-  const gameSettings = await getEntriesByContentType("gameSettings");
 
   return {
     props: {
-      intitialusers,
       blocks,
-      gameSettings,
     },
   };
 }
+

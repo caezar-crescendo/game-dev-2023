@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ScoreBoardContainer from './ScoreBoardContainer';
 import BoardGame from './BoardGame';
 
-const Board = ({blocks, socket, user, blocksArangement, usersArrangement}) => {
+const Board = ({blocks, socket, user, blocksArangement, usersArrangement = []}) => {
   const [users, setUsers] = useState([]);
   let playerTurn = users.find((item) => {
     if (typeof item.fields.playerTurn === 'object' ? item.fields.playerTurn['en-US'] : item.fields.playerTurn) {

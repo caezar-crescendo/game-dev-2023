@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { updateBlocks, updateUser } from '../lib/helpers';
 
-const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, usersArrangement, blocks = [] }) => {
+const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, usersArrangement = [], blocks = [] }) => {
   const [blks, setBlks] = useState(blocks);
   const [selected, setSelected] = useState([]);
   let nextPlayerTurnIndex = 0;
@@ -15,6 +15,7 @@ const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, use
       return item;
     }
   })
+  // console.log('blocks blocks', blks);
 
   const resetSelected = () => {
     const cloneBlocks = [...blks];
@@ -69,7 +70,7 @@ const BoardGame = ({ isAdmin = false, user, users, socket, blocksArangement, use
               onClick={async () => {
                 // updateBlocks(block.sys.id, false, false);
                 // return;
-                if ((playerTurn.sys.id !== user.sys.id) || block.fields.isSelected || block.fields.isPaired || selected.length === 2) {
+                if ((playerTurn?.sys?.id !== user.sys.id) || block.fields.isSelected || block.fields.isPaired || selected.length === 2) {
                   return;
                 }
 
