@@ -11,6 +11,7 @@ export default function Admin(props) {
   const { blocks } = props;
   const [users, setUsers] = useState([]);
   const [gameSettings, setGameSettings] = useState([]);
+  const [showBlocks, setShowBlocks] = useState(false);
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -101,7 +102,7 @@ export default function Admin(props) {
       // console.log('users.list.update', data);
       setUsers(data);
     });
-  }, [socket]);
+  }, [socket, showBlocks]);
 
   return (
     <div className="pt-5">
@@ -115,6 +116,15 @@ export default function Admin(props) {
             }}
           >
             Reset Board Game
+          </Button>
+          <Button
+            className="mr-4"
+            variant="outlined"
+            onClick={() => {
+              setShowBlocks(!showBlocks);
+            }}
+          >
+            Show Blocks
           </Button>
           <Button
             variant="outlined"
@@ -161,7 +171,7 @@ export default function Admin(props) {
                 socket={socket}
                 user={user}
                 users={users}
-                isAdmin={true}
+                isAdmin={showBlocks}
               />
             </Paper>
           </Grid>
